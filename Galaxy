@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Niña 🌌</title>
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Arial', sans-serif; }
+        canvas { display: block; }
+        .mensaje {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 30px #ff00ff;
+            pointer-events: none;
+            width: 90%;
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; animation: glow 2s ease-in-out infinite alternate; }
+        p { font-size: 1.2rem; opacity: 0.9; }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073; }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mensaje">
+        <h1>Te amo, mi cielo 💖</h1>
+        <p>Tú eres mi galaxia favorita en todo el universo ✨</p>
+    </div>
+    <canvas id="galaxy"></canvas>
+    <script>
+        const canvas = document.getElementById('galaxy');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            const colors = ['#ffffff', '#ffe9ff', '#d1e3ff', '#ffd1d1'];
+            for (let i = 0; i < 600; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 0.05 + 0.01,
+                    angle: Math.random() * Math.PI * 2,
+                    dist: Math.random() * (canvas.width > canvas.height ? canvas.width : canvas.height) / 1.5
+                });
+            }
+        }
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                let centerX = canvas.width / 2;
+                let centerY = canvas.height / 2;
+                s.angle += s.speed * 0.1;
+                let x = centerX + Math.cos(s.angle) * s.dist;
+                let y = centerY + Math.sin(s.angle) * s.dist;
+                ctx.beginPath();
+                ctx.arc(x, y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = s.color;
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = s.color;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', init);
+        init();
+        draw();
+    </script>
+</body>
+</html>
